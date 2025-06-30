@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 
 const connectToDb = require('./db/connection');
 const userRoutes = require('./routes/userRoute')
+const captainRoutes = require('./routes/captainRoute')
 
 
 connectToDb();
@@ -18,6 +19,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 
 app.use('/users',userRoutes)
+app.use('/captains',captainRoutes)
 
 
 module.exports = app;
