@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import {UserDataContext} from '../context/UserContext'
 import { motion } from 'framer-motion'
 
 const UserLogin = () => {
@@ -8,12 +10,27 @@ const UserLogin = () => {
     const [password, setPassword] = useState('');
     const [userData, setUserData] = useState({});
 
-    const submitHandler = (e) => {
+        const navigate = useNavigate()
+        const {user,setUser} = useContext(UserDataContext)
+
+
+
+    const submitHandler = async(e) => {
         e.preventDefault();
-        setUserData({
+
+       const userData = {
             email: email,
             password: password
-        })
+        }
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login `,userData)
+
+        if(response.status === 200){
+            const data = response.data;
+            setUser(data.user);
+            localStorage.setItem('token',data.token)
+            navigate('/home')
+        }
         setEmail('');
         setPassword('');
     }
