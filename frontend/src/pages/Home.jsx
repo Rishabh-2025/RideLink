@@ -107,7 +107,7 @@ const Home = () => {
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             exit={{ opacity: 0, scale: 0.8, rotate: -180 }}
             transition={{
-                duration: 2.5,
+                duration: 1.5,
                 ease: [0.42, 0, 0.58, 1],
             }}
             className='relative overflow-hidden'

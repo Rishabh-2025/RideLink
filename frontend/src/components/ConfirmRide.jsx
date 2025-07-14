@@ -16,13 +16,8 @@ const ConfirmRide = ({setConfirmRidePanel,setVehicleFound}) => {
                 <img className='h-20' src="/images/white-car.jpeg" alt="" />
 
                 <div className='w-full mt-5'>
-                    <div className='flex items-center gap-5 p-3 border-b-1'>
-                        <FaMapMarkerAlt className='text-gray-700 text-md' />
-                        <div className=''>
-                            <h3 className='text-lg font-medium'>546/11-4</h3>
-                            <p className='text-base text-gray-500 -mt-1'>Kanakariya talab, Bhopal </p>
-                        </div>
-                    </div>
+       
+       
 
                     <div className='flex items-center gap-5 p-3 border-b-1'>
                     <RiUserLocationFill className='text-gray-700 text-md' />
