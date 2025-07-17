@@ -2,18 +2,18 @@ import React, { useRef, useState } from 'react'
 import { IoLogOutOutline } from "react-icons/io5";
 import gsap from 'gsap'
 import { Link } from 'react-router-dom'
-import CaptainDetails from '../components/CaptainDetails';
-import { RidePoopUp } from '../components/RidePoopUp';
 import { useGSAP } from '@gsap/react';
-import ConfirmRidePoopUp from '../components/ConfirmRidePoopUp';
+import CaptainDetails from '../components/CaptainDetails';
+import RidePopUp  from '../components/RidePopUp';
+import ConfirmRidePopUp from '../components/ConfirmRidePopUp';
 
 const CaptainHome = () => {
 
   const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
-  const [confirmRidePoopUpPanel, setConfirmRidePoopUpPanel] = useState(false);
+  const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
 
   const ridePopUpPanelRef = useRef(null)
-  const confirmRidePoopUpPanelRef = useRef(null)
+  const confirmRidePopUpPanelRef = useRef(null)
 
   useGSAP(function () {
     if (ridePopUpPanel) {
@@ -28,16 +28,16 @@ const CaptainHome = () => {
   }, [ridePopUpPanel])
 
   useGSAP(function () {
-    if (confirmRidePoopUpPanel) {
-      gsap.to(confirmRidePoopUpPanelRef.current, {
+    if (confirmRidePopUpPanel) {
+      gsap.to(confirmRidePopUpPanelRef.current, {
         transform: 'translateY(0)'
       })
     } else {
-      gsap.to(confirmRidePoopUpPanelRef.current, {
+      gsap.to(confirmRidePopUpPanelRef.current, {
         transform: 'translateY(100%)'
       })
     }
-  }, [confirmRidePoopUpPanel])
+  }, [confirmRidePopUpPanel])
 
   return (
     <div className='h-screen'>
@@ -71,12 +71,12 @@ const CaptainHome = () => {
 
       <div ref={ridePopUpPanelRef} className=' fixed z-10 w-full translate-y-full bottom-0 px-3 py-6 pt-14  bg-white'>
 
-        <RidePoopUp setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePoopUpPanel={setConfirmRidePoopUpPanel}  />
+        <RidePopUp setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
       </div>
 
-      <div ref={confirmRidePoopUpPanelRef} className='h-screen fixed z-60 w-full translate-y-full bottom-0 px-3 h-screen  py-6 pt-14  bg-white'>
+      <div ref={confirmRidePopUpPanelRef} className='h-screen fixed z-60 w-full translate-y-full bottom-0 px-3 h-screen  py-6 pt-14  bg-white'>
 
-        <ConfirmRidePoopUp setConfirmRidePoopUpPanel={setConfirmRidePoopUpPanel} setRidePopUpPanel = {setRidePopUpPanel} />
+        <ConfirmRidePopUp setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} setRidePopUpPanel={setRidePopUpPanel} />
       </div>
 
     </div>
