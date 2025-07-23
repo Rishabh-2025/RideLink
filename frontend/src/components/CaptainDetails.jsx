@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { MdAccessTime } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import { LuNotebook } from "react-icons/lu";
 
+import { CaptainDataContext } from '../context/CaptainContext'
 const CaptainDetails = () => {
+      const { captain } = useContext(CaptainDataContext)
     return (
         <div>
             <div className="flex items-center justify-center flex-wrap gap-6">
@@ -11,11 +13,11 @@ const CaptainDetails = () => {
                 <div className='flex   w-screen  justify-between'>
 
                     <div className="flex items-center  gap-4">
-                        <img src="" alt="Captain Avatar" className="h-10 w-10 rounded-full object-cover bg-gray-200" />
-                        <h4 className="text-lg font-medium">Captain1</h4>
+                        <img src={captain?.captain?.image ?captain?.captain?.image: "/images/driver.png"} alt="Captain Avatar" className="h-10 w-10 rounded-full object-cover bg-gray-200" />
+                        <h4 className="text-lg font-medium capitalise">{captain?.fullname?.firstname + " " + captain?.fullname?.lastname}</h4>
                     </div>
 
-                    <div className="text-right">
+                    <div className="text-right w-24">
                         <h4 className="text-xl font-semibold text-green-700">&#8377; 193.3</h4>
                         <p className="text-sm text-gray-600">Earned</p>
                     </div>

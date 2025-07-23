@@ -29,7 +29,8 @@ const registerCaptain = async (req, res) => {
         color: vehicle.color,
         plate: vehicle.plate,
         capacity: vehicle.capacity,
-        vehicleType: vehicle.vehicleType
+        vehicleType: vehicle.vehicleType,
+        vehicleName: vehicle.vehicleName
     });
 
     const token = captain.generateAuthToken();

@@ -1,10 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { RiUserLocationFill } from "react-icons/ri";
 import { HiDocumentCurrencyRupee } from "react-icons/hi2";
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { CaptainDataContext } from '../context/CaptainContext';
 const ConfirmRidePopUp = ({ setConfirmRidePopUpPanel, setRidePopUpPanel }) => {
+
+const { captain } = useContext(CaptainDataContext)
 
     const [otp, setOtp] = useState(["", "", "", ""]);
     const otpRefs = useRef([]);
@@ -46,8 +49,8 @@ const ConfirmRidePopUp = ({ setConfirmRidePopUpPanel, setRidePopUpPanel }) => {
             <div className='flex items-center justify-between bg-blue-200 text-gray-900 rounded-xl p-4'>
 
                 <div className="flex items-center  gap-3 ">
-                    <img src="" alt="User Avatar" className="h-12 w-12 rounded-full object-cover bg-gray-200" />
-                    <h4 className="text-lg font-medium">Test1</h4>
+                    <img src={captain?.captain?.image ?captain?.captain?.image: "/images/driver.png"} alt="User Avatar" className="h-12 w-12 rounded-full object-cover bg-gray-200" />
+                    <h4 className="text-lg font-medium capitalise">Test1</h4>
                 </div>
                 <h5 className='text-lg font-semibold '> 2.2 km</h5>
 

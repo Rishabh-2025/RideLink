@@ -8,17 +8,17 @@ function initializeSocket(server) {
     io = socketIo(server, {
         cors: {
             origin: '*',
-            methods: [ 'GET', 'POST' ]
+            methods: ['GET', 'POST']
         }
     });
 
     io.on('connection', (socket) => {
-        console.log(`Client connected: ${socket.id}`);
 
 
+
+        console.log(`Client connected`);
         socket.on('join', async (data) => {
             const { userId, userType } = data;
-
             if (userType === 'user') {
                 await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
             } else if (userType === 'captain') {
@@ -30,27 +30,29 @@ function initializeSocket(server) {
         socket.on('update-location-captain', async (data) => {
             const { userId, location } = data;
 
-            if (!location || !location.ltd || !location.lng) {
+            if (!location || !location.coordinates[0] || !location.coordinates[1]) {
                 return socket.emit('error', { message: 'Invalid location data' });
             }
-
+            
+            
             await captainModel.findByIdAndUpdate(userId, {
                 location: {
-                    ltd: location.ltd,
-                    lng: location.lng
+                    type: 'Point',
+                    coordinates: [location.coordinates[0], location.coordinates[1]]
                 }
             });
+
         });
 
         socket.on('disconnect', () => {
-            console.log(`Client disconnected: ${socket.id}`);
+            console.log(`Client disconnected`);
         });
     });
 }
 
 const sendMessageToSocketId = (socketId, messageObject) => {
 
-console.log(messageObject);
+    console.log(messageObject);
 
     if (io) {
         io.to(socketId).emit(messageObject.event, messageObject.data);

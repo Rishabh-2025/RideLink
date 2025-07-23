@@ -22,7 +22,7 @@ app.use(cookieParser())
 app.use('/users',userRoutes)
 app.use('/captains',captainRoutes)
 app.use('/maps',mapsRoutes)
-app.use('/ride',rideRoutes)
+app.use('/rides',rideRoutes)
 
 
 module.exports = app;

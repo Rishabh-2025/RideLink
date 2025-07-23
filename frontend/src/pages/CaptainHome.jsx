@@ -1,19 +1,85 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect, useContext } from 'react'
 import { IoLogOutOutline } from "react-icons/io5";
 import gsap from 'gsap'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react';
 import CaptainDetails from '../components/CaptainDetails';
-import RidePopUp  from '../components/RidePopUp';
+import RidePopUp from '../components/RidePopUp';
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp';
 
+import { SocketContext } from '../context/SocketContext'
+import { CaptainDataContext } from '../context/CaptainContext'
 const CaptainHome = () => {
 
-  const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
+  const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
+  const [ride, setRide] = useState(null)
 
   const ridePopUpPanelRef = useRef(null)
   const confirmRidePopUpPanelRef = useRef(null)
+
+
+  const { socket } = useContext(SocketContext)
+  const { captain } = useContext(CaptainDataContext)
+
+  useEffect(() => {
+    socket.emit('join', {
+      userId: captain._id,
+      userType: 'captain'
+    })
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const payload = {
+              userId: captain._id,
+              location: {
+                type: 'Point',
+                coordinates: [position.coords.longitude, position.coords.latitude]
+              }
+            };
+            socket.emit('update-location-captain', payload);
+          },
+          error => {
+            console.error("Geolocation error:", error.message);
+          }
+        );
+      }
+    }
+
+    const locationInterval = setInterval(updateLocation, 10000);
+
+    // Don't forget to clear the interval on unmount
+    return () => clearInterval(locationInterval);
+  }, [])
+
+  socket.on('new-ride', (data) => {
+    console.log("=====>", data)
+    setRide(data)
+    setRidePopUpPanel(true)
+
+  })
+
+  async function confirmRide() {
+
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
+
+      rideId: ride._id,
+      captainId: captain._id,
+
+
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('captain-token')}`
+      }
+    })
+    if (response.status === 200) {
+      setRidePopUpPanel(false)
+      setConfirmRidePopUpPanel(true)
+    }
+
+  }
 
   useGSAP(function () {
     if (ridePopUpPanel) {
@@ -71,7 +137,10 @@ const CaptainHome = () => {
 
       <div ref={ridePopUpPanelRef} className=' fixed z-10 w-full translate-y-full bottom-0 px-3 py-6 pt-14  bg-white'>
 
-        <RidePopUp setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
+        <RidePopUp
+          ride={ride}
+          setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
+          confirmRide={confirmRide} />
       </div>
 
       <div ref={confirmRidePopUpPanelRef} className='h-screen fixed z-60 w-full translate-y-full bottom-0 px-3 h-screen  py-6 pt-14  bg-white'>
